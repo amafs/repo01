@@ -5,10 +5,10 @@
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.20677083333333332" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.11666666666666667" />
-        <entry key="app/src/main/res/layout/content_main.xml" value="0.165" />
-        <entry key="app/src/main/res/layout/fragment_image_slider.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/content_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_image_slider.xml" value="0.25" />
         <entry key="app/src/main/res/layout/gallery_thumbnail.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/image_fullscreen_preview.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/image_fullscreen_preview.xml" value="0.125" />
       </map>
     </option>
   </component>
