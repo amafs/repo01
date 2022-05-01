@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,83 +16,54 @@ import info.androidhive.glide.adapter.GalleryAdapter
 import info.androidhive.glide.app.AppController
 import info.androidhive.glide.model.Image
 import org.json.JSONException
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import androidx.fragment.app.FragmentTransaction;
 
 class MainActivity : AppCompatActivity() {
     private val TAG = MainActivity::class.java.simpleName
-    private var images: ArrayList<Image>? = null
-    private var pDialog: ProgressDialog? = null
-    private var mAdapter: GalleryAdapter? = null
-    private var recyclerView: RecyclerView? = null
+    private var tablayout: TabLayout? = null
+    private val fragmentGrid: GridFragment = GridFragment()
+    private val fragmentList: ListFragment = ListFragment()
+    var now = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val toolbar: Toolbar = findViewById<View>(R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
-        recyclerView = findViewById<View>(R.id.recycler_view) as RecyclerView
-        pDialog = ProgressDialog(this)
-        images = ArrayList<Image>()
-        mAdapter = GalleryAdapter(applicationContext, images!!)
-        val mLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(applicationContext, 2)
-        recyclerView!!.layoutManager = mLayoutManager
-        recyclerView!!.itemAnimator = DefaultItemAnimator()
-        recyclerView!!.adapter = mAdapter
-        recyclerView!!.addOnItemTouchListener(
-            GalleryAdapter.RecyclerTouchListener(
-                applicationContext,
-                recyclerView!!, object : GalleryAdapter.ClickListener {
-                    override fun onClick(view: View?, position: Int) {
-                        val bundle = Bundle()
-                        bundle.putSerializable("images", images)
-                        bundle.putInt("position", position)
-                        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-                        val newFragment: SlideshowDialogFragment =
-                            SlideshowDialogFragment.newInstance()
-                        newFragment.setArguments(bundle)
-                        newFragment.show(ft, "slideshow")
-                    }
 
-                    override fun onLongClick(view: View?, position: Int) {}
-                })
-        )
-        fetchImages()
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.add(R.id.fragment_test, fragmentGrid, "Grid")
+        fragmentTransaction.add(R.id.fragment_test, fragmentList, "List")
+        fragmentTransaction.hide(fragmentList)
+        fragmentTransaction.commit()
+
+        tablayout = findViewById(R.id.tabLayoutMain)
+        tablayout?.addOnTabSelectedListener(object : OnTabSelectedListener {
+            //按下要做的事
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                // Step03-寫一個方法，tab.getPosition是按下哪個按鈕，將之傳入fragmentChange方法內:
+                fragmentChange(tab.position)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
     }
-
-    private fun fetchImages() {
-        pDialog!!.setMessage("Downloading json...")
-        pDialog!!.show()
-        val req = JsonArrayRequest(
-            endpoint,
-            { response ->
-                Log.d(TAG, response.toString())
-                pDialog!!.hide()
-                images!!.clear()
-                for (i in 0 until response.length()) {
-                    try {
-                        val `object` = response.getJSONObject(i)
-                        val image = Image()
-                        image.name=`object`.getString("name")
-                        val url = `object`.getJSONObject("url")
-                        image.small=url.getString("small")
-                        image.medium=url.getString("medium")
-                        image.large=url.getString("large")
-                        image.timestamp=`object`.getString("timestamp")
-                        images!!.add(image)
-                    } catch (e: JSONException) {
-                        Log.e(TAG, "Json parsing error: " + e.message)
-                    }
-                }
-                mAdapter!!.notifyDataSetChanged()
-            }) { error ->
-            Log.e(TAG, "Error: " + error.message)
-            pDialog!!.hide()
+    // Step04-切換顯示方法撰寫:
+    private fun fragmentChange(position: Int) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        when (now) {
+            0 -> fragmentTransaction.hide(fragmentGrid)
+            1 -> fragmentTransaction.hide(fragmentList)
         }
-
-        // Adding request to request queue
-        AppController.instance?.addToRequestQueue(req)
+        when (position) {
+            0 -> fragmentTransaction.show(fragmentGrid)
+            1 -> fragmentTransaction.show(fragmentList)
+        }
+        fragmentTransaction.commit()
+        // Step06-更新目前所在的Fragment:
+        now = position
     }
 
-    companion object {
-        private const val endpoint = "https://api.androidhive.info/json/glide.json"
-    }
 }
