@@ -28,7 +28,8 @@ class GridFragment : Fragment() {
     private var recyclerView: RecyclerView? = null
     private var toolbar: Toolbar?=null
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val v: View = inflater.inflate(R.layout.fragment_grid, container, false)

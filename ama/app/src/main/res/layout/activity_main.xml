@@ -11,7 +11,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/colorOnPrimary"
             app:popupTheme="@style/Theme.Ama"
             app:layout_constraintTop_toTopOf="parent"
             app:title="@string/app_name"
@@ -23,19 +23,24 @@
         android:id="@+id/tabLayoutMain"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:background="?attr/colorOnPrimary"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:tabGravity="fill"
-        app:tabMode="fixed">
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="#FFBB86FC"
+        app:tabTextColor="#FFFFFF">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tab_item01"/>
 
+
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tab_item02"/>
+            android:text="@string/tab_item02"
+            />
 
     </com.google.android.material.tabs.TabLayout>
 
