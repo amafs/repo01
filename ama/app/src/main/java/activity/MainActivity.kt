@@ -1,24 +1,10 @@
 package info.androidhive.glide.activity
 
-import android.app.ProgressDialog
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
-import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.toolbox.JsonArrayRequest
 import info.androidhive.glide.R
-import info.androidhive.glide.adapter.GalleryAdapter
-import info.androidhive.glide.app.AppController
-import info.androidhive.glide.model.Image
-import org.json.JSONException
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
-import androidx.fragment.app.FragmentTransaction;
 
 class MainActivity : AppCompatActivity() {
     private val TAG = MainActivity::class.java.simpleName

@@ -31,13 +31,7 @@ class GridFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        /*super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_grid)
-        */
         val v: View = inflater.inflate(R.layout.fragment_grid, container, false)
-        //val toolbar: Toolbar = findViewById<View>(R.id.toolbar) as Toolbar
-        toolbar = v.findViewById<View>(R.id.toolbar)as Toolbar
-        //setSupportActionBar(toolbar)
         recyclerView = v.findViewById<View>(R.id.recycler_view) as RecyclerView
         pDialog = ProgressDialog(this.activity)
         images = ArrayList<Image>()
