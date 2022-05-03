@@ -5,7 +5,10 @@ plugins {
 
 android {
     compileSdk 32
-
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
     defaultConfig {
         applicationId "com.basic.ama"
         minSdk 21

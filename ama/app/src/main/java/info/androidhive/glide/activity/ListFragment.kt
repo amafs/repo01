@@ -1,63 +1,55 @@
 package info.androidhive.glide.activity
+
 import android.app.ProgressDialog
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.ListView
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.toolbox.JsonArrayRequest
-import info.androidhive.glide.R
 import info.androidhive.glide.adapter.GalleryAdapter_list
 import info.androidhive.glide.app.AppController
 import info.androidhive.glide.model.Image
 import org.json.JSONException
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager
+import info.androidhive.glide.databinding.FragmentListBinding
 
 class ListFragment :Fragment(){
     private val TAG = ListFragment::class.java.simpleName
-    private var listView: ListView? = null
-    private var listData:ArrayList<String>? = null
-    private var lblTitle: TextView? = null
-    private var lblDate: TextView? = null
-
     private var images: ArrayList<Image>? = null
     private var pDialog: ProgressDialog? = null
     private var mAdapter: GalleryAdapter_list? = null
-    private var recyclerView: RecyclerView? = null
+    //private var recyclerView: RecyclerView? = null
+    private var _binding:FragmentListBinding?=null
+    private val binding get()=_binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ):View{
-        val v : View= inflater.inflate(R.layout.fragment_list, container, false)
-        recyclerView = v.findViewById<View>(R.id.list_view) as RecyclerView
+        _binding= FragmentListBinding.inflate(inflater,container,false)
+        val view =binding.root
+        //al v : View= inflater.inflate(R.layout.fragment_list, container, false)
+        //recyclerView = v.findViewById<View>(R.id.list_view) as RecyclerView
         pDialog = ProgressDialog(this.activity)
         images = ArrayList<Image>()
         mAdapter = GalleryAdapter_list(requireContext(), images!!)
         val mLayoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)//GridLayoutManager(context, 1)
-        recyclerView!!.layoutManager = mLayoutManager
-        recyclerView!!.itemAnimator = DefaultItemAnimator()
-        recyclerView!!.adapter = mAdapter
-        recyclerView!!.addOnItemTouchListener(
+        //recyclerView!!.layoutManager = mLayoutManager
+        binding.listView!!.layoutManager=mLayoutManager
+        binding.listView!!.itemAnimator = DefaultItemAnimator()
+        binding.listView!!.adapter = mAdapter
+        binding.listView!!.addOnItemTouchListener(
             GalleryAdapter_list.RecyclerTouchListener(
                 context,
-                recyclerView!!, object : GalleryAdapter_list.ClickListener {
+                binding.listView!!, object : GalleryAdapter_list.ClickListener {
                     override fun onClick(view: View?, position: Int) {
                         val bundle = Bundle()
                         bundle.putSerializable("images", images)
@@ -82,7 +74,7 @@ class ListFragment :Fragment(){
                 })
         )
         fetchImages()
-        return v
+        return view
     }
 
     private fun fetchImages() {

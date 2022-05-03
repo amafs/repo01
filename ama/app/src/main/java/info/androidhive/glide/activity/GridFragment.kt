@@ -2,7 +2,6 @@ package info.androidhive.glide.activity
 
 import android.app.ProgressDialog
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,39 +11,42 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.toolbox.JsonArrayRequest
-import info.androidhive.glide.R
 import info.androidhive.glide.adapter.GalleryAdapter
 import info.androidhive.glide.app.AppController
 import info.androidhive.glide.model.Image
 import org.json.JSONException
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction;
+import info.androidhive.glide.databinding.FragmentGridBinding
 
 class GridFragment : Fragment() {
     private val TAG = GridFragment::class.java.simpleName
     private var images: ArrayList<Image>? = null
     private var pDialog: ProgressDialog? = null
     private var mAdapter: GalleryAdapter? = null
-    private var recyclerView: RecyclerView? = null
-    private var toolbar: Toolbar?=null
+   // private var recyclerView: RecyclerView? = null
+    private var _binding:FragmentGridBinding?=null//view binding
+    private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val v: View = inflater.inflate(R.layout.fragment_grid, container, false)
-        recyclerView = v.findViewById<View>(R.id.recycler_view) as RecyclerView
+        _binding=FragmentGridBinding.inflate(inflater,container,false)
+        val view= binding.root
+        //val v: View = inflater.inflate(R.layout.fragment_grid, container, false)
+        //recyclerView = v.findViewById<View>(R.id.recycler_view) as RecyclerView
         pDialog = ProgressDialog(this.activity)
         images = ArrayList<Image>()
         mAdapter = GalleryAdapter(requireContext(), images!!)
         val mLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, 2)
-        recyclerView!!.layoutManager = mLayoutManager
-        recyclerView!!.itemAnimator = DefaultItemAnimator()
-        recyclerView!!.adapter = mAdapter
-        recyclerView!!.addOnItemTouchListener(
+        //recyclerView!!.layoutManager = mLayoutManager
+        binding.recyclerView!!.layoutManager=mLayoutManager
+        binding.recyclerView!!.itemAnimator = DefaultItemAnimator()
+        binding.recyclerView!!.adapter = mAdapter
+        binding.recyclerView!!.addOnItemTouchListener(
             GalleryAdapter.RecyclerTouchListener(
                 context,
-                recyclerView!!, object : GalleryAdapter.ClickListener {
+                binding.recyclerView!!, object : GalleryAdapter.ClickListener {
                     override fun onClick(view: View?, position: Int) {
                         val bundle = Bundle()
                         bundle.putSerializable("images", images)
@@ -60,7 +62,7 @@ class GridFragment : Fragment() {
                 })
         )
         fetchImages()
-        return v
+        return view
     }
 
     private fun fetchImages() {

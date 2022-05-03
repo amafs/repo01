@@ -5,16 +5,21 @@ import androidx.appcompat.app.AppCompatActivity
 import info.androidhive.glide.R
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import info.androidhive.glide.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private val TAG = MainActivity::class.java.simpleName
-    private var tablayout: TabLayout? = null
+    //private var tablayout: TabLayout? = null
     private val fragmentGrid: GridFragment = GridFragment()
     private val fragmentList: ListFragment = ListFragment()
+    private lateinit var binding:ActivityMainBinding
     var now = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding= ActivityMainBinding.inflate(layoutInflater)
+        val view=binding.root
+        setContentView(view)
+        //setContentView(R.layout.activity_main)
 
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
@@ -23,8 +28,8 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.hide(fragmentList)
         fragmentTransaction.commit()
 
-        tablayout = findViewById(R.id.tabLayoutMain)
-        tablayout?.addOnTabSelectedListener(object : OnTabSelectedListener {
+        //tablayout = findViewById(R.id.tabLayoutMain)改為view binding
+        binding.tabLayoutMain.addOnTabSelectedListener(object : OnTabSelectedListener {
             //按下要做的事
             override fun onTabSelected(tab: TabLayout.Tab) {
                 // Step03-寫一個方法，tab.getPosition是按下哪個按鈕，將之傳入fragmentChange方法內:

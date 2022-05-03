@@ -15,40 +15,45 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import info.androidhive.glide.R
+import info.androidhive.glide.databinding.FragmentImageSliderBinding
+import info.androidhive.glide.databinding.ImageFullscreenPreviewBinding
 import info.androidhive.glide.model.Image
-
 
 class SlideshowDialogFragment : DialogFragment() {
     private val TAG = SlideshowDialogFragment::class.java.simpleName
     private var images: ArrayList<Image>? = null
-    private var viewPager: ViewPager? = null
+    //private var viewPager: ViewPager? = null
     private var myViewPagerAdapter: MyViewPagerAdapter? = null
-    private var lblCount: TextView? = null
-    private var lblTitle: TextView? = null
-    private var lblDate: TextView? = null
+    //private var lblCount: TextView? = null
+    //private var lblTitle: TextView? = null
+    //private var lblDate: TextView? = null
     private var selectedPosition = 0
+    private var _binding:FragmentImageSliderBinding?=null
+    private val binding get()=_binding!!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val v: View = inflater.inflate(R.layout.fragment_image_slider, container, false)
-        viewPager = v.findViewById<View>(R.id.viewpager) as ViewPager
-        lblCount = v.findViewById<View>(R.id.lbl_count) as TextView
-        lblTitle = v.findViewById<View>(R.id.title) as TextView
-        lblDate = v.findViewById<View>(R.id.date) as TextView
+        _binding= FragmentImageSliderBinding.inflate(inflater,container,false)
+        //val v: View = inflater.inflate(R.layout.fragment_image_slider, container, false)
+        val view=binding.root
+        //viewPager = v.findViewById<View>(R.id.viewpager) as ViewPager
+        //lblCount = v.findViewById<View>(R.id.lbl_count) as TextView
+        //lblTitle = v.findViewById<View>(R.id.title) as TextView
+        //lblDate = v.findViewById<View>(R.id.date) as TextView
         images = requireArguments().getSerializable("images") as ArrayList<Image>
         selectedPosition = requireArguments().getInt("position")
         Log.e(TAG, "position: $selectedPosition")
         Log.e(TAG, "images size: " + images!!.size)
         myViewPagerAdapter = MyViewPagerAdapter()
-        viewPager!!.adapter = myViewPagerAdapter
-        viewPager!!.addOnPageChangeListener(viewPagerPageChangeListener)
+        binding.viewpager!!.adapter = myViewPagerAdapter
+        binding.viewpager!!.addOnPageChangeListener(viewPagerPageChangeListener)
         setCurrentItem(selectedPosition)
-        return v
+        return view
     }
 
     private fun setCurrentItem(position: Int) {
-        viewPager!!.setCurrentItem(position, false)
+        binding.viewpager!!.setCurrentItem(position, false)
         displayMetaInfo(selectedPosition)
     }
 
@@ -63,10 +68,10 @@ class SlideshowDialogFragment : DialogFragment() {
     }
 
     private fun displayMetaInfo(position: Int) {
-        lblCount!!.text = (position + 1).toString() + " of " + images!!.size
+        binding.lblCount!!.text = (position + 1).toString() + " of " + images!!.size
         val image = images!![position]
-        lblTitle!!.text = image.name
-        lblDate!!.text = image.timestamp
+        binding.title!!.text = image.name
+        binding.date!!.text = image.timestamp
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -11,7 +11,7 @@
         <entry key="app/src/main/res/layout/fragment_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/gallery_thumbnail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/gallery_thumbnail_list.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/image_fullscreen_preview.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/image_fullscreen_preview.xml" value="0.1" />
       </map>
     </option>
   </component>
