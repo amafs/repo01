@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import info.androidhive.glide.R
+import info.androidhive.glide.databinding.GalleryThumbnailBinding
+import info.androidhive.glide.databinding.GalleryThumbnailListBinding
 import info.androidhive.glide.model.Image
 
 /**
@@ -18,18 +20,16 @@ class GalleryAdapter(private val mContext: Context, images: List<Image>) :
     RecyclerView.Adapter<GalleryAdapter.MyViewHolder>() {
     private val images: List<Image>
 
-    inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class MyViewHolder(binding: GalleryThumbnailBinding) : RecyclerView.ViewHolder(binding.root) {
         var thumbnail: ImageView
-
         init {
-            thumbnail = view.findViewById<View>(R.id.thumbnail) as ImageView
+            thumbnail = binding.thumbnail
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.gallery_thumbnail, parent, false)
-        return MyViewHolder(itemView)
+        val binding=GalleryThumbnailBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        return MyViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {

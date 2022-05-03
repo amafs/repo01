@@ -23,7 +23,6 @@ class GridFragment : Fragment() {
     private var images: ArrayList<Image>? = null
     private var pDialog: ProgressDialog? = null
     private var mAdapter: GalleryAdapter? = null
-   // private var recyclerView: RecyclerView? = null
     private var _binding:FragmentGridBinding?=null//view binding
     private val binding get() = _binding!!
     override fun onCreateView(
@@ -33,13 +32,10 @@ class GridFragment : Fragment() {
     ): View {
         _binding=FragmentGridBinding.inflate(inflater,container,false)
         val view= binding.root
-        //val v: View = inflater.inflate(R.layout.fragment_grid, container, false)
-        //recyclerView = v.findViewById<View>(R.id.recycler_view) as RecyclerView
         pDialog = ProgressDialog(this.activity)
         images = ArrayList<Image>()
         mAdapter = GalleryAdapter(requireContext(), images!!)
         val mLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, 2)
-        //recyclerView!!.layoutManager = mLayoutManager
         binding.recyclerView!!.layoutManager=mLayoutManager
         binding.recyclerView!!.itemAnimator = DefaultItemAnimator()
         binding.recyclerView!!.adapter = mAdapter

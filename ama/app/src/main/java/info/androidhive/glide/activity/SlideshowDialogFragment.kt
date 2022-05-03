@@ -22,11 +22,7 @@ import info.androidhive.glide.model.Image
 class SlideshowDialogFragment : DialogFragment() {
     private val TAG = SlideshowDialogFragment::class.java.simpleName
     private var images: ArrayList<Image>? = null
-    //private var viewPager: ViewPager? = null
     private var myViewPagerAdapter: MyViewPagerAdapter? = null
-    //private var lblCount: TextView? = null
-    //private var lblTitle: TextView? = null
-    //private var lblDate: TextView? = null
     private var selectedPosition = 0
     private var _binding:FragmentImageSliderBinding?=null
     private val binding get()=_binding!!
@@ -35,12 +31,7 @@ class SlideshowDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding= FragmentImageSliderBinding.inflate(inflater,container,false)
-        //val v: View = inflater.inflate(R.layout.fragment_image_slider, container, false)
         val view=binding.root
-        //viewPager = v.findViewById<View>(R.id.viewpager) as ViewPager
-        //lblCount = v.findViewById<View>(R.id.lbl_count) as TextView
-        //lblTitle = v.findViewById<View>(R.id.title) as TextView
-        //lblDate = v.findViewById<View>(R.id.date) as TextView
         images = requireArguments().getSerializable("images") as ArrayList<Image>
         selectedPosition = requireArguments().getInt("position")
         Log.e(TAG, "position: $selectedPosition")
@@ -81,18 +72,17 @@ class SlideshowDialogFragment : DialogFragment() {
 
     //	adapter
     inner class MyViewPagerAdapter : PagerAdapter() {
-        private var layoutInflater: LayoutInflater? = null
+        private var _binding:ImageFullscreenPreviewBinding?=null
+        private val binding get()=_binding!!
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
-            layoutInflater = getLayoutInflater()
-            val view: View =
-                layoutInflater !!.inflate(R.layout.image_fullscreen_preview, container, false)
-            val imageViewPreview = view.findViewById<View>(R.id.image_preview) as ImageView
+            _binding= ImageFullscreenPreviewBinding.inflate(LayoutInflater.from(container.context),container,false)
+            val view=binding.root
             val image = images!![position]
             Glide.with(getActivity()).load(image.large)
                 .thumbnail(0.5f)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imageViewPreview)
+                .into(binding.imagePreview)
             container.addView(view)
             return view
         }

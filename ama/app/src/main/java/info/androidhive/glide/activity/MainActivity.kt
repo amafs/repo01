@@ -9,7 +9,6 @@ import info.androidhive.glide.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private val TAG = MainActivity::class.java.simpleName
-    //private var tablayout: TabLayout? = null
     private val fragmentGrid: GridFragment = GridFragment()
     private val fragmentList: ListFragment = ListFragment()
     private lateinit var binding:ActivityMainBinding
@@ -19,16 +18,12 @@ class MainActivity : AppCompatActivity() {
         binding= ActivityMainBinding.inflate(layoutInflater)
         val view=binding.root
         setContentView(view)
-        //setContentView(R.layout.activity_main)
-
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.add(R.id.fragment_test, fragmentGrid, "Grid")
         fragmentTransaction.add(R.id.fragment_test, fragmentList, "List")
         fragmentTransaction.hide(fragmentList)
         fragmentTransaction.commit()
-
-        //tablayout = findViewById(R.id.tabLayoutMain)改為view binding
         binding.tabLayoutMain.addOnTabSelectedListener(object : OnTabSelectedListener {
             //按下要做的事
             override fun onTabSelected(tab: TabLayout.Tab) {

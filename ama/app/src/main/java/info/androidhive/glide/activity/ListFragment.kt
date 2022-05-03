@@ -25,7 +25,6 @@ class ListFragment :Fragment(){
     private var images: ArrayList<Image>? = null
     private var pDialog: ProgressDialog? = null
     private var mAdapter: GalleryAdapter_list? = null
-    //private var recyclerView: RecyclerView? = null
     private var _binding:FragmentListBinding?=null
     private val binding get()=_binding!!
 
@@ -36,13 +35,10 @@ class ListFragment :Fragment(){
     ):View{
         _binding= FragmentListBinding.inflate(inflater,container,false)
         val view =binding.root
-        //al v : View= inflater.inflate(R.layout.fragment_list, container, false)
-        //recyclerView = v.findViewById<View>(R.id.list_view) as RecyclerView
         pDialog = ProgressDialog(this.activity)
         images = ArrayList<Image>()
         mAdapter = GalleryAdapter_list(requireContext(), images!!)
         val mLayoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)//GridLayoutManager(context, 1)
-        //recyclerView!!.layoutManager = mLayoutManager
         binding.listView!!.layoutManager=mLayoutManager
         binding.listView!!.itemAnimator = DefaultItemAnimator()
         binding.listView!!.adapter = mAdapter

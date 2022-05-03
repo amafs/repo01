@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import info.androidhive.glide.R
+import info.androidhive.glide.databinding.GalleryThumbnailBinding
+import info.androidhive.glide.databinding.GalleryThumbnailListBinding
 import info.androidhive.glide.model.Image
 
 /**
@@ -19,20 +21,19 @@ class GalleryAdapter_list(private val mContext: Context, images: List<Image>) :
     RecyclerView.Adapter<GalleryAdapter_list.MyViewHolder>() {
     private val images: List<Image>
 
-    inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class MyViewHolder(binding: GalleryThumbnailListBinding) : RecyclerView.ViewHolder(binding.root) {
         var thumbnail: ImageView
         var list_name: TextView
         init {
-            thumbnail = view.findViewById<View>(R.id.list_thumb_nail) as ImageView
-            list_name= view.findViewById<View>(R.id.list_name)as TextView
+            thumbnail =binding.listThumbNail
+            list_name= binding.listName
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.gallery_thumbnail_list, parent, false)
-
-        return MyViewHolder(itemView)
+        val binding=
+            GalleryThumbnailListBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        return MyViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
