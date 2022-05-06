@@ -2,40 +2,59 @@ package info.androidhive.glide.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import info.androidhive.glide.R
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import info.androidhive.glide.R
 import info.androidhive.glide.databinding.ActivityMainBinding
+import info.androidhive.glide.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
+
     private val TAG = MainActivity::class.java.simpleName
     private val fragmentGrid: GridFragment = GridFragment()
     private val fragmentList: ListFragment = ListFragment()
-    private lateinit var binding:ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var mainViewModel: MainViewModel
     var now = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityMainBinding.inflate(layoutInflater)
-        val view=binding.root
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
         setContentView(view)
+        setupUI()
+
+    }
+
+    //UI
+    private fun setupUI() {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
+
         fragmentTransaction.add(R.id.fragment_test, fragmentGrid, "Grid")
         fragmentTransaction.add(R.id.fragment_test, fragmentList, "List")
         fragmentTransaction.hide(fragmentList)
         fragmentTransaction.commit()
-        binding.tabLayoutMain.addOnTabSelectedListener(object : OnTabSelectedListener {
-            //按下要做的事
+        binding.tabLayoutMain.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                // Step03-寫一個方法，tab.getPosition是按下哪個按鈕，將之傳入fragmentChange方法內:
-                fragmentChange(tab.position)
+                // 寫一個方法，tab.getPosition是按下哪個按鈕，將之傳入fragmentChange方法內:
+                mainViewModel.changePage(tab.position)
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-            override fun onTabReselected(tab: TabLayout.Tab) {}
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+
         })
+
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        mainViewModel.position.observe(this) { position ->
+            fragmentChange(position)
+        }
+
     }
-    // Step04-切換顯示方法撰寫:
+
+    //切換顯示方法撰寫:
     private fun fragmentChange(position: Int) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
@@ -52,4 +71,8 @@ class MainActivity : AppCompatActivity() {
         now = position
     }
 
+    //view model
+    private fun setupViewModel() {
+
+    }
 }

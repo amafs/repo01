@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.*
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import com.bumptech.glide.Glide
@@ -17,22 +16,19 @@ import info.androidhive.glide.model.Image
 /**
  * Created by Lincoln on 31/03/16.
  */
-class GalleryAdapter_list(private val mContext: Context, images: List<Image>) :
-    RecyclerView.Adapter<GalleryAdapter_list.MyViewHolder>() {
+class GalleryGridAdapter(private val mContext: Context, images: List<Image>) :
+    RecyclerView.Adapter<GalleryGridAdapter.MyViewHolder>() {
     private val images: List<Image>
 
-    inner class MyViewHolder(binding: GalleryThumbnailListBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MyViewHolder(binding: GalleryThumbnailBinding) : RecyclerView.ViewHolder(binding.root) {
         var thumbnail: ImageView
-        var list_name: TextView
         init {
-            thumbnail =binding.listThumbNail
-            list_name= binding.listName
+            thumbnail = binding.thumbnail
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val binding=
-            GalleryThumbnailListBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding=GalleryThumbnailBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return MyViewHolder(binding)
     }
 
@@ -43,8 +39,6 @@ class GalleryAdapter_list(private val mContext: Context, images: List<Image>) :
             .crossFade()
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(holder.thumbnail)
-
-        holder.list_name.setText(image.name)
     }
 
     override fun getItemCount(): Int {
@@ -60,19 +54,8 @@ class GalleryAdapter_list(private val mContext: Context, images: List<Image>) :
         context: Context?,
         recyclerView: RecyclerView,
         private val clickListener: ClickListener?
-    ) :
-        OnItemTouchListener {
+    ) : OnItemTouchListener {
         private val gestureDetector: GestureDetector
-        override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-            val child = rv.findChildViewUnder(e.x, e.y)
-            if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
-                clickListener.onClick(child, rv.getChildAdapterPosition(child))
-            }
-            return false
-        }
-
-        override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
-        override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
 
         init {
             gestureDetector = GestureDetector(context, object : SimpleOnGestureListener() {
@@ -88,6 +71,17 @@ class GalleryAdapter_list(private val mContext: Context, images: List<Image>) :
                 }
             })
         }
+
+        override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+            val child = rv.findChildViewUnder(e.x, e.y)
+            if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
+                clickListener.onClick(child, rv.getChildAdapterPosition(child))
+            }
+            return false
+        }
+
+        override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+        override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
     }
 
     init {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.*
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import com.bumptech.glide.Glide
@@ -16,19 +17,22 @@ import info.androidhive.glide.model.Image
 /**
  * Created by Lincoln on 31/03/16.
  */
-class GalleryAdapter(private val mContext: Context, images: List<Image>) :
-    RecyclerView.Adapter<GalleryAdapter.MyViewHolder>() {
+class GalleryListAdapter(private val mContext: Context, images: List<Image>) :
+    RecyclerView.Adapter<GalleryListAdapter.MyViewHolder>() {
     private val images: List<Image>
 
-    inner class MyViewHolder(binding: GalleryThumbnailBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MyViewHolder(binding: GalleryThumbnailListBinding) : RecyclerView.ViewHolder(binding.root) {
         var thumbnail: ImageView
+        var listName: TextView
         init {
-            thumbnail = binding.thumbnail
+            thumbnail =binding.listThumbNail
+            listName= binding.listName
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val binding=GalleryThumbnailBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding=
+            GalleryThumbnailListBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return MyViewHolder(binding)
     }
 
@@ -39,6 +43,8 @@ class GalleryAdapter(private val mContext: Context, images: List<Image>) :
             .crossFade()
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(holder.thumbnail)
+
+        holder.listName.setText(image.name)
     }
 
     override fun getItemCount(): Int {

@@ -37,14 +37,14 @@ class SlideshowDialogFragment : DialogFragment() {
         Log.e(TAG, "position: $selectedPosition")
         Log.e(TAG, "images size: " + images!!.size)
         myViewPagerAdapter = MyViewPagerAdapter()
-        binding.viewpager!!.adapter = myViewPagerAdapter
-        binding.viewpager!!.addOnPageChangeListener(viewPagerPageChangeListener)
+        binding.viewpager.adapter = myViewPagerAdapter
+        binding.viewpager.addOnPageChangeListener(viewPagerPageChangeListener)
         setCurrentItem(selectedPosition)
         return view
     }
 
     private fun setCurrentItem(position: Int) {
-        binding.viewpager!!.setCurrentItem(position, false)
+        binding.viewpager.setCurrentItem(position, false)
         displayMetaInfo(selectedPosition)
     }
 
@@ -59,10 +59,10 @@ class SlideshowDialogFragment : DialogFragment() {
     }
 
     private fun displayMetaInfo(position: Int) {
-        binding.lblCount!!.text = (position + 1).toString() + " of " + images!!.size
+        binding.lblCount.text = (position + 1).toString() + " of " + images!!.size
         val image = images!![position]
-        binding.title!!.text = image.name
-        binding.date!!.text = image.timestamp
+        binding.title.text = image.name
+        binding.date.text = image.timestamp
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

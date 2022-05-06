@@ -2,47 +2,47 @@ package info.androidhive.glide.activity
 
 import android.app.ProgressDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.toolbox.JsonArrayRequest
-import info.androidhive.glide.adapter.GalleryAdapter
-import info.androidhive.glide.app.AppController
-import info.androidhive.glide.model.Image
-import org.json.JSONException
-import androidx.fragment.app.FragmentTransaction;
+import info.androidhive.glide.adapter.GalleryGridAdapter
 import info.androidhive.glide.databinding.FragmentGridBinding
+import info.androidhive.glide.model.Image
+import info.androidhive.glide.viewmodel.GridViewModel
 
 class GridFragment : Fragment() {
     private val TAG = GridFragment::class.java.simpleName
     private var images: ArrayList<Image>? = null
-    private var pDialog: ProgressDialog? = null
-    private var mAdapter: GalleryAdapter? = null
-    private var _binding:FragmentGridBinding?=null//view binding
+    private var progressDialog: ProgressDialog? = null
+    private var adapter: GalleryGridAdapter? = null
+    private var _binding: FragmentGridBinding? = null//view binding
     private val binding get() = _binding!!
+    private lateinit var gridViewModel: GridViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding=FragmentGridBinding.inflate(inflater,container,false)
-        val view= binding.root
-        pDialog = ProgressDialog(this.activity)
+        _binding = FragmentGridBinding.inflate(inflater, container, false)
+        val view = binding.root
+        progressDialog = ProgressDialog(this.activity)
         images = ArrayList<Image>()
-        mAdapter = GalleryAdapter(requireContext(), images!!)
-        val mLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, 2)
-        binding.recyclerView!!.layoutManager=mLayoutManager
-        binding.recyclerView!!.itemAnimator = DefaultItemAnimator()
-        binding.recyclerView!!.adapter = mAdapter
-        binding.recyclerView!!.addOnItemTouchListener(
-            GalleryAdapter.RecyclerTouchListener(
+        adapter = GalleryGridAdapter(requireContext(), images!!)//call GalleryGridAdapter
+        val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, 2)
+        binding.recyclerView.layoutManager = layoutManager
+        binding.recyclerView.itemAnimator = DefaultItemAnimator()
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.addOnItemTouchListener(
+            GalleryGridAdapter.RecyclerTouchListener(
                 context,
-                binding.recyclerView!!, object : GalleryAdapter.ClickListener {
+                binding.recyclerView, object : GalleryGridAdapter.ClickListener {
                     override fun onClick(view: View?, position: Int) {
                         val bundle = Bundle()
                         bundle.putSerializable("images", images)
@@ -57,46 +57,21 @@ class GridFragment : Fragment() {
                     override fun onLongClick(view: View?, position: Int) {}
                 })
         )
-        fetchImages()
+        gridViewModel = ViewModelProviders.of(this).get(GridViewModel::class.java)
+        showProgressBar()
+        gridViewModel.fetchImages()
+        gridViewModel.imagesLiveData.observe(viewLifecycleOwner) { imagesLiveData ->
+            images!!.clear()
+            images = imagesLiveData
+            adapter!!.notifyDataSetChanged()
+            progressDialog!!.hide()
+        }
         return view
     }
 
-    private fun fetchImages() {
-        pDialog!!.setMessage("Downloading json...")
-        pDialog!!.show()
-        val req = JsonArrayRequest(
-            endpoint,
-            { response ->
-                Log.d(TAG, response.toString())
-                pDialog!!.hide()
-                images!!.clear()
-                for (i in 0 until response.length()) {
-                    try {
-                        val `object` = response.getJSONObject(i)
-                        val image = Image()
-                        image.name=`object`.getString("name")
-                        val url = `object`.getJSONObject("url")
-                        image.small=url.getString("small")
-                        image.medium=url.getString("medium")
-                        image.large=url.getString("large")
-                        image.timestamp=`object`.getString("timestamp")
-                        images!!.add(image)
-                    } catch (e: JSONException) {
-                        Log.e(TAG, "Json parsing error: " + e.message)
-                    }
-                }
-                mAdapter!!.notifyDataSetChanged()
-            }) { error ->
-            Log.e(TAG, "Error: " + error.message)
-            pDialog!!.hide()
-        }
-
-        // Adding request to request queue
-        AppController.instance?.addToRequestQueue(req)
-    }
-
-    companion object {
-        private const val endpoint = "https://api.androidhive.info/json/glide.json"
+    private fun showProgressBar() {
+        progressDialog!!.setMessage("Downloading json...")
+        progressDialog!!.show()
     }
 
 }
