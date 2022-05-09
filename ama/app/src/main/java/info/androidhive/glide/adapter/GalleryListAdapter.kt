@@ -1,6 +1,7 @@
 package info.androidhive.glide.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.*
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.widget.ImageView
@@ -91,6 +92,7 @@ class GalleryListAdapter(private val mContext: Context, images: List<Image>) :
     }
 
     init {
+        Log.d("listAdapter",images?.size.toString())
         this.images = images
     }
 }

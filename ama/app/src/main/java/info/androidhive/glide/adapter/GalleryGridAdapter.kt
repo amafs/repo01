@@ -1,6 +1,7 @@
 package info.androidhive.glide.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.*
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.widget.ImageView
@@ -13,13 +14,10 @@ import info.androidhive.glide.databinding.GalleryThumbnailBinding
 import info.androidhive.glide.databinding.GalleryThumbnailListBinding
 import info.androidhive.glide.model.Image
 
-/**
- * Created by Lincoln on 31/03/16.
- */
 class GalleryGridAdapter(private val mContext: Context, images: List<Image>) :
     RecyclerView.Adapter<GalleryGridAdapter.MyViewHolder>() {
-    private val images: List<Image>
 
+    private val images: List<Image>
     inner class MyViewHolder(binding: GalleryThumbnailBinding) : RecyclerView.ViewHolder(binding.root) {
         var thumbnail: ImageView
         init {
@@ -85,6 +83,8 @@ class GalleryGridAdapter(private val mContext: Context, images: List<Image>) :
     }
 
     init {
+        Log.d("gridAdapter",images.size.toString())
         this.images = images
+
     }
 }

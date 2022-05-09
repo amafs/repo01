@@ -2,6 +2,7 @@ package info.androidhive.glide.activity
 
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,10 +60,12 @@ class GridFragment : Fragment() {
         )
         gridViewModel = ViewModelProviders.of(this).get(GridViewModel::class.java)
         showProgressBar()
+
         gridViewModel.fetchImages()
-        gridViewModel.imagesLiveData.observe(viewLifecycleOwner) { imagesLiveData ->
-            images!!.clear()
-            images = imagesLiveData
+        gridViewModel.imagesLiveData.observe(viewLifecycleOwner) { images ->
+            this.images?.clear()
+            this.images?.addAll(images!!)
+            Log.d("grid",this.images?.size.toString())
             adapter!!.notifyDataSetChanged()
             progressDialog!!.hide()
         }

@@ -78,9 +78,10 @@ class ListFragment : Fragment() {
         listViewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
         showProgressBar()
         listViewModel.fetchImages()
-        listViewModel.imagesLiveData.observe(viewLifecycleOwner) { imagesLiveData ->
-            images!!.clear()
-            images = imagesLiveData
+        listViewModel.imagesLiveData.observe(viewLifecycleOwner) { images ->
+            this.images?.clear()
+            this.images?.addAll(images!!)
+            Log.d("list",this.images?.size.toString())
             adapter!!.notifyDataSetChanged()
             progressDialog!!.hide()
         }
