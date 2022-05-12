@@ -20,8 +20,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:textSize="15sp"
+        android:textColor = "?android:textColorPrimary"
         app:layout_constraintLeft_toRightOf="@id/list_thumb_nail"
         app:layout_constraintTop_toTopOf="@id/list_thumb_nail"
-        app:layout_constraintBottom_toBottomOf="@id/list_thumb_nail"/>
+        app:layout_constraintBottom_toBottomOf="@id/list_thumb_nail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
