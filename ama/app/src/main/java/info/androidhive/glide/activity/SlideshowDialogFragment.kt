@@ -1,20 +1,15 @@
 package info.androidhive.glide.activity
 
-import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.fragment.app.DialogFragment
 import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import info.androidhive.glide.R
 import info.androidhive.glide.databinding.FragmentImageSliderBinding
 import info.androidhive.glide.databinding.ImageFullscreenPreviewBinding
 import info.androidhive.glide.model.Image
@@ -24,14 +19,14 @@ class SlideshowDialogFragment : DialogFragment() {
     private var images: ArrayList<Image>? = null
     private var myViewPagerAdapter: MyViewPagerAdapter? = null
     private var selectedPosition = 0
-    private var _binding:FragmentImageSliderBinding?=null
-    private val binding get()=_binding!!
+    private var _binding: FragmentImageSliderBinding? = null
+    private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding= FragmentImageSliderBinding.inflate(inflater,container,false)
-        val view=binding.root
+        _binding = FragmentImageSliderBinding.inflate(inflater, container, false)
+        val view = binding.root
         images = requireArguments().getSerializable("images") as ArrayList<Image>
         selectedPosition = requireArguments().getInt("position")
         Log.e(TAG, "position: $selectedPosition")
@@ -72,11 +67,15 @@ class SlideshowDialogFragment : DialogFragment() {
 
     //	adapter
     inner class MyViewPagerAdapter : PagerAdapter() {
-        private var _binding:ImageFullscreenPreviewBinding?=null
-        private val binding get()=_binding!!
+        private var _binding: ImageFullscreenPreviewBinding? = null
+        private val binding get() = _binding!!
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
-            _binding= ImageFullscreenPreviewBinding.inflate(LayoutInflater.from(container.context),container,false)
-            val view=binding.root
+            _binding = ImageFullscreenPreviewBinding.inflate(
+                LayoutInflater.from(container.context),
+                container,
+                false
+            )
+            val view = binding.root
             val image = images!![position]
             Glide.with(getActivity()).load(image.large)
                 .thumbnail(0.5f)

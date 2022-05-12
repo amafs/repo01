@@ -11,12 +11,11 @@ import info.androidhive.glide.viewmodel.MainViewModel
 class MainActivity : AppCompatActivity() {
 
     private val TAG = MainActivity::class.java.simpleName
-    private val fragmentGrid: GridFragment = GridFragment()
-    private val fragmentList: ListFragment = ListFragment()
+    private val fragmentGrid: ImageFragment = ImageFragment("Grid")
+    private val fragmentList: ImageFragment = ImageFragment("List")
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
     var now = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -26,7 +25,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    //UI
     private fun setupUI() {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
@@ -46,12 +44,10 @@ class MainActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
 
         })
-
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         mainViewModel.position.observe(this) { position ->
             fragmentChange(position)
         }
-
     }
 
     //切換顯示方法撰寫:
@@ -71,8 +67,4 @@ class MainActivity : AppCompatActivity() {
         now = position
     }
 
-    //view model
-    private fun setupViewModel() {
-
-    }
 }

@@ -6,9 +6,6 @@ import android.os.Build
 import android.util.AttributeSet
 import android.widget.RelativeLayout
 
-/**
- * Created by Lincoln on 05/04/16.
- */
 internal class SquareLayout : RelativeLayout {
     constructor(context: Context?) : super(context) {}
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {}
