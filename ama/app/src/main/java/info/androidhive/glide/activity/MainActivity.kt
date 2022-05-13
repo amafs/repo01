@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.tabs.TabLayout
+import info.androidhive.glide.BuildConfig
 import info.androidhive.glide.R
 import info.androidhive.glide.databinding.ActivityMainBinding
 import info.androidhive.glide.viewmodel.MainViewModel
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,6 +20,9 @@ class MainActivity : AppCompatActivity() {
     var now = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)

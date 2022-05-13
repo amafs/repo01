@@ -5,6 +5,7 @@ import com.android.volley.toolbox.JsonArrayRequest
 import info.androidhive.glide.app.AppController
 import info.androidhive.glide.model.Image
 import org.json.JSONException
+import timber.log.Timber
 
 class Repository {
     private val TAG = Repository::class.java.simpleName
@@ -13,7 +14,7 @@ class Repository {
         val req = JsonArrayRequest(
             endpoint,
             { response ->
-                Log.d("Repo", response.length().toString())
+                Timber.d(response.length().toString())
                 if (response != null) {
                     for (Index in 0 until response.length()) {
                         try {
@@ -26,16 +27,16 @@ class Repository {
                             image.large = jsonUrl.getString("large")
                             image.timestamp = jsonObject.getString("timestamp")
                             images!!.add(image)
-                            Log.d("Repo", "Sucessssss")
+                            Timber.d("Sucessssss")
                         } catch (e: JSONException) {
-                            Log.e(TAG, "Json parsing error: " + e.message)
+                            Timber.e("Json parsing error: %s", e.message)
                         }
                         onDataGet(images!!)
-                        Log.d("Repo", images!!.size.toString())
+                        Timber.d(images!!.size.toString())
                     }
                 }
             }) { error ->
-            Log.e(TAG, "Error: " + error.message)
+            Timber.e("Error: %s", error.message)
         }
 
         // Adding request to request queue

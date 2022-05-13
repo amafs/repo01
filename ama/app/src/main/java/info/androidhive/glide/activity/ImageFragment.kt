@@ -19,6 +19,8 @@ import info.androidhive.glide.adapter.GalleryAdapter
 import info.androidhive.glide.databinding.FragmentRecylerviewBinding
 import info.androidhive.glide.model.Image
 import info.androidhive.glide.viewmodel.FragmentViewModel
+import timber.log.Timber
+
 
 class ImageFragment(private val showType: String) : Fragment() {
     private val TAG = ImageFragment::class.java.simpleName
@@ -94,7 +96,7 @@ class ImageFragment(private val showType: String) : Fragment() {
         viewModel.imagesLiveData.observe(viewLifecycleOwner) { images ->
             this.images?.clear()
             this.images?.addAll(images!!)
-            Log.d("list", this.images?.size.toString())
+            Timber.d(this.images?.size.toString())
             adapter!!.notifyDataSetChanged()
             progressDialog!!.hide()
         }
@@ -130,7 +132,7 @@ class ImageFragment(private val showType: String) : Fragment() {
         viewModel.imagesLiveData.observe(viewLifecycleOwner) { images ->
             this.images?.clear()
             this.images?.addAll(images!!)
-            Log.d("grid", this.images?.size.toString())
+            Timber.d(this.images?.size.toString())
             adapter!!.notifyDataSetChanged()
             progressDialog!!.hide()
         }

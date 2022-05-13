@@ -13,6 +13,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import info.androidhive.glide.databinding.FragmentImageSliderBinding
 import info.androidhive.glide.databinding.ImageFullscreenPreviewBinding
 import info.androidhive.glide.model.Image
+import timber.log.Timber
 
 class SlideshowDialogFragment : DialogFragment() {
     private val TAG = SlideshowDialogFragment::class.java.simpleName
@@ -29,8 +30,8 @@ class SlideshowDialogFragment : DialogFragment() {
         val view = binding.root
         images = requireArguments().getSerializable("images") as ArrayList<Image>
         selectedPosition = requireArguments().getInt("position")
-        Log.e(TAG, "position: $selectedPosition")
-        Log.e(TAG, "images size: " + images!!.size)
+        Timber.e("position: $selectedPosition")
+        Timber.e("images size: " + images!!.size)
         myViewPagerAdapter = MyViewPagerAdapter()
         binding.viewpager.adapter = myViewPagerAdapter
         binding.viewpager.addOnPageChangeListener(viewPagerPageChangeListener)
