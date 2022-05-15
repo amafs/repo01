@@ -13,8 +13,8 @@ import timber.log.Timber
 class MainActivity : AppCompatActivity() {
 
     private val TAG = MainActivity::class.java.simpleName
-    private val fragmentGrid: ImageFragment = ImageFragment("Grid")
-    private val fragmentList: ImageFragment = ImageFragment("List")
+    private val fragmentGrid: ImagesFragment = ImagesFragment("Grid")
+    private val fragmentList: ImagesFragment = ImagesFragment("List")
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
     var now = 0
