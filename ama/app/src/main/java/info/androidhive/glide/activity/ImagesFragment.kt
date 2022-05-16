@@ -20,8 +20,7 @@ import info.androidhive.glide.model.Image
 import info.androidhive.glide.viewmodel.ImagesFragmentViewModel
 import timber.log.Timber
 
-
-class ImagesFragment(private val showType: String) : Fragment() {
+class ImagesFragment(private val beginPosition: Int) : Fragment() {
     private val TAG = ImagesFragment::class.java.simpleName
     private var images: ArrayList<Image>? = null
     private var progressDialog: ProgressDialog? = null
@@ -29,7 +28,7 @@ class ImagesFragment(private val showType: String) : Fragment() {
     private var _binding: FragmentRecylerviewBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: ImagesFragmentViewModel
-
+    var position: Int = 0
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,16 +38,10 @@ class ImagesFragment(private val showType: String) : Fragment() {
         images = ArrayList<Image>()
         _binding = FragmentRecylerviewBinding.inflate(inflater, container, false)
         binding.recyclerView.itemAnimator = DefaultItemAnimator()
-        adapter = GalleryAdapter(requireContext(), images!!, showType)
+        adapter = GalleryAdapter(requireContext(), images!!, beginPosition)
         binding.recyclerView.adapter = adapter
-        if (showType.equals("List")) {
-            val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
-            binding.recyclerView.layoutManager = layoutManager
-        }
-        if (showType.equals("Grid")) {
-            val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, 2)
-            binding.recyclerView.layoutManager = layoutManager
-        }
+        val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, 2)
+        binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.addOnItemTouchListener(
             GalleryAdapter.RecyclerTouchListener(
                 context,
@@ -65,18 +58,18 @@ class ImagesFragment(private val showType: String) : Fragment() {
                     }
 
                     override fun onLongClick(view: View?, position: Int) {
-                        if (showType.equals("List")) {
-                            val image = images!![position]
-                            val toast = Toast.makeText(
-                                context,
-                                "電影名稱：" + image.name + "\n日期：" + image.timestamp,
-                                Toast.LENGTH_SHORT
-                            )
-                            toast.setGravity(Gravity.TOP, 0, 100)
-                            //Android 11開始不支援
-                            //在 targetSdkVersion 為 R 或更高時，呼叫 setGravity 和 setMargin 方法將不進行任何操作
-                            toast.show()
-                        }
+
+                        val image = images!![position]
+                        val toast = Toast.makeText(
+                            context,
+                            "電影名稱：" + image.name + "\n日期：" + image.timestamp,
+                            Toast.LENGTH_SHORT
+                        )
+                        toast.setGravity(Gravity.TOP, 0, 100)
+                        //Android 11開始不支援
+                        //在 targetSdkVersion 為 R 或更高時，呼叫 setGravity 和 setMargin 方法將不進行任何操作
+                        toast.show()
+
                     }
                 })
         )
@@ -96,5 +89,20 @@ class ImagesFragment(private val showType: String) : Fragment() {
     private fun showProgressBar() {
         progressDialog!!.setMessage("Downloading json...")
         progressDialog!!.show()
+    }
+
+    fun changeLayout() {
+        when (position) {
+            0 -> {
+                val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, 2)
+                binding.recyclerView.layoutManager = layoutManager
+            }
+            1 -> {
+                val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
+                binding.recyclerView.layoutManager = layoutManager
+            }
+        }
+        adapter = GalleryAdapter(requireContext(), images!!, position)
+        binding.recyclerView.adapter = adapter
     }
 }

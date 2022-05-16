@@ -11,13 +11,10 @@ import info.androidhive.glide.viewmodel.MainViewModel
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
-
     private val TAG = MainActivity::class.java.simpleName
-    private val fragmentGrid: ImagesFragment = ImagesFragment("Grid")
-    private val fragmentList: ImagesFragment = ImagesFragment("List")
+    private var imagesFragment: ImagesFragment = ImagesFragment(0)
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
-    var now = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (BuildConfig.DEBUG) {
@@ -27,16 +24,12 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         setupUI()
-
     }
 
     private fun setupUI() {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-
-        fragmentTransaction.add(R.id.fragment_test, fragmentGrid, "Grid")
-        fragmentTransaction.add(R.id.fragment_test, fragmentList, "List")
-        fragmentTransaction.hide(fragmentList)
+        fragmentTransaction.add(R.id.fragment_test, imagesFragment)
         fragmentTransaction.commit()
         binding.tabLayoutMain.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
@@ -59,17 +52,9 @@ class MainActivity : AppCompatActivity() {
     private fun fragmentChange(position: Int) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        when (now) {
-            0 -> fragmentTransaction.hide(fragmentGrid)
-            1 -> fragmentTransaction.hide(fragmentList)
-        }
-        when (position) {
-            0 -> fragmentTransaction.show(fragmentGrid)
-            1 -> fragmentTransaction.show(fragmentList)
-        }
+        imagesFragment.position = position
+        imagesFragment.changeLayout()
+        fragmentTransaction.replace(R.id.fragment_test, imagesFragment)
         fragmentTransaction.commit()
-        // Step06-更新目前所在的Fragment:
-        now = position
     }
-
 }

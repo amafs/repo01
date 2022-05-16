@@ -16,7 +16,7 @@ import info.androidhive.glide.model.Image
 class GalleryAdapter(
     private val mContext: Context,
     images: List<Image>,
-    private val showType: String
+    private val tabPosition: Int
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
     private val images: List<Image>
@@ -43,8 +43,8 @@ class GalleryAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         lateinit var viewHolder: RecyclerView.ViewHolder
-        when (showType) {
-            "List" -> {
+        when (tabPosition) {
+            1 -> {
                 val viewList = GalleryThumbnailListBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
@@ -52,7 +52,7 @@ class GalleryAdapter(
                 )
                 viewHolder = ListViewHolder(viewList)
             }
-            "Grid" -> {
+            0 -> {
                 val viewGrid = GalleryThumbnailGridBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
@@ -68,8 +68,8 @@ class GalleryAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val image: Image = images[position]
 
-        when (showType) {
-            "List" -> {
+        when (tabPosition) {
+            1 -> {
                 val listHolder: ListViewHolder = holder as ListViewHolder
                 Glide.with(mContext).load(image.medium)
                     .thumbnail(0.5f)
@@ -78,7 +78,7 @@ class GalleryAdapter(
                     .into(listHolder.thumbnail)
                 listHolder.listName.setText(image.name)
             }
-            "Grid" -> {
+            0 -> {
                 val gridHolder: GridViewHolder = holder as GridViewHolder
                 Glide.with(mContext).load(image.medium)
                     .thumbnail(0.5f)
