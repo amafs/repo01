@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import info.androidhive.glide.activity.GRID
+import info.androidhive.glide.activity.LIST
 import info.androidhive.glide.databinding.GalleryThumbnailGridBinding
 import info.androidhive.glide.databinding.GalleryThumbnailListBinding
 import info.androidhive.glide.model.Image
@@ -44,10 +46,8 @@ class GalleryAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         lateinit var viewHolder: RecyclerView.ViewHolder
-        val grid = 0
-        val list = 1
         when (tabPosition) {
-            list -> {
+            LIST -> {
                 val viewList = GalleryThumbnailListBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
@@ -55,7 +55,7 @@ class GalleryAdapter(
                 )
                 viewHolder = ListViewHolder(viewList)
             }
-            grid -> {
+            GRID -> {
                 val viewGrid = GalleryThumbnailGridBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
@@ -71,7 +71,7 @@ class GalleryAdapter(
         val image: Image = images[position]
 
         when (tabPosition) {
-            1 -> {
+            LIST -> {
                 val listHolder: ListViewHolder = holder as ListViewHolder
                 Glide.with(mContext).load(image.medium)
                     .thumbnail(0.5f)
@@ -80,7 +80,7 @@ class GalleryAdapter(
                     .into(listHolder.thumbnail)
                 listHolder.listName.setText(image.name)
             }
-            0 -> {
+            GRID -> {
                 val gridHolder: GridViewHolder = holder as GridViewHolder
                 Glide.with(mContext).load(image.medium)
                     .thumbnail(0.5f)

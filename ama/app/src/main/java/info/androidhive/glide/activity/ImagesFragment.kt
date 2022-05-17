@@ -91,14 +91,12 @@ class ImagesFragment(var position: Int) : Fragment() {
     }
 
     fun changeLayout() {
-        val grid = 0
-        val list = 1
         when (position) {
-            grid -> {
+            GRID -> {
                 val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, 2)
                 binding.recyclerView.layoutManager = layoutManager
             }
-            list -> {
+            LIST -> {
                 val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
                 binding.recyclerView.layoutManager = layoutManager
             }
