@@ -28,6 +28,12 @@ class ImagesFragment(var position: Int) : Fragment() {
     private var _binding: FragmentRecylerviewBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: ImagesViewModel
+
+    companion object {
+        const val GRID = 0
+        const val LIST = 1
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

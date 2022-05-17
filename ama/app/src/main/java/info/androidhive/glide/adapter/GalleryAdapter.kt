@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import info.androidhive.glide.activity.GRID
-import info.androidhive.glide.activity.LIST
 import info.androidhive.glide.databinding.GalleryThumbnailGridBinding
 import info.androidhive.glide.databinding.GalleryThumbnailListBinding
 import info.androidhive.glide.model.Image
@@ -23,6 +21,11 @@ class GalleryAdapter(
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
     private val images: List<Image>
+
+    companion object {
+        const val GRID = 0
+        const val LIST = 1
+    }
 
     inner class ListViewHolder(binding: GalleryThumbnailListBinding) :
         RecyclerView.ViewHolder(binding.root) {

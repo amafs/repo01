@@ -10,9 +10,6 @@ import info.androidhive.glide.databinding.ActivityMainBinding
 import info.androidhive.glide.viewmodel.MainViewModel
 import timber.log.Timber
 
-const val GRID = 0
-const val LIST = 1
-
 class MainActivity : AppCompatActivity() {
     private val TAG = MainActivity::class.java.simpleName
     private var imagesFragment: ImagesFragment = ImagesFragment(0)
