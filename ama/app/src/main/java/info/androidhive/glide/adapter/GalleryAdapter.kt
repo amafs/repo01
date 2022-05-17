@@ -13,6 +13,7 @@ import info.androidhive.glide.databinding.GalleryThumbnailGridBinding
 import info.androidhive.glide.databinding.GalleryThumbnailListBinding
 import info.androidhive.glide.model.Image
 
+
 class GalleryAdapter(
     private val mContext: Context,
     images: List<Image>,
@@ -43,8 +44,10 @@ class GalleryAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         lateinit var viewHolder: RecyclerView.ViewHolder
+        val grid = 0
+        val list = 1
         when (tabPosition) {
-            1 -> {
+            list -> {
                 val viewList = GalleryThumbnailListBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
@@ -52,7 +55,7 @@ class GalleryAdapter(
                 )
                 viewHolder = ListViewHolder(viewList)
             }
-            0 -> {
+            grid -> {
                 val viewGrid = GalleryThumbnailGridBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
@@ -61,7 +64,6 @@ class GalleryAdapter(
                 viewHolder = GridViewHolder(viewGrid)
             }
         }
-
         return viewHolder
     }
 

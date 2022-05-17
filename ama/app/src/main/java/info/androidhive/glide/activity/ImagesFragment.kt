@@ -17,18 +17,17 @@ import androidx.recyclerview.widget.RecyclerView
 import info.androidhive.glide.adapter.GalleryAdapter
 import info.androidhive.glide.databinding.FragmentRecylerviewBinding
 import info.androidhive.glide.model.Image
-import info.androidhive.glide.viewmodel.ImagesFragmentViewModel
+import info.androidhive.glide.viewmodel.ImagesViewModel
 import timber.log.Timber
 
-class ImagesFragment(private val beginPosition: Int) : Fragment() {
+class ImagesFragment(var position: Int) : Fragment() {
     private val TAG = ImagesFragment::class.java.simpleName
     private var images: ArrayList<Image>? = null
     private var progressDialog: ProgressDialog? = null
     private var adapter: GalleryAdapter? = null
     private var _binding: FragmentRecylerviewBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: ImagesFragmentViewModel
-    var position: Int = 0
+    private lateinit var viewModel: ImagesViewModel
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,7 +37,7 @@ class ImagesFragment(private val beginPosition: Int) : Fragment() {
         images = ArrayList<Image>()
         _binding = FragmentRecylerviewBinding.inflate(inflater, container, false)
         binding.recyclerView.itemAnimator = DefaultItemAnimator()
-        adapter = GalleryAdapter(requireContext(), images!!, beginPosition)
+        adapter = GalleryAdapter(requireContext(), images!!, position)
         binding.recyclerView.adapter = adapter
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, 2)
         binding.recyclerView.layoutManager = layoutManager
@@ -73,7 +72,7 @@ class ImagesFragment(private val beginPosition: Int) : Fragment() {
                     }
                 })
         )
-        viewModel = ViewModelProviders.of(this).get(ImagesFragmentViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(ImagesViewModel::class.java)
         showProgressBar()
         viewModel.fetchImages()
         viewModel.imagesLiveData.observe(viewLifecycleOwner) { images ->
@@ -92,12 +91,14 @@ class ImagesFragment(private val beginPosition: Int) : Fragment() {
     }
 
     fun changeLayout() {
+        val grid = 0
+        val list = 1
         when (position) {
-            0 -> {
+            grid -> {
                 val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, 2)
                 binding.recyclerView.layoutManager = layoutManager
             }
-            1 -> {
+            list -> {
                 val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
                 binding.recyclerView.layoutManager = layoutManager
             }

@@ -54,7 +54,6 @@ class MainActivity : AppCompatActivity() {
         val fragmentTransaction = fragmentManager.beginTransaction()
         imagesFragment.position = position
         imagesFragment.changeLayout()
-        fragmentTransaction.replace(R.id.fragment_test, imagesFragment)
         fragmentTransaction.commit()
     }
 }
